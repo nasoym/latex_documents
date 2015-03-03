@@ -1,0 +1,12 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\begin{document}
+\tikzstyle{box} = [draw, thick, fill=blue!10]
+\begin{tikzpicture}
+  \node[box] (A) {
+    \tikz {
+      \node[box] (B) {bbbb}
+    }
+  };
+\end{tikzpicture}
+\end{document}
