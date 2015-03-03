@@ -1,0 +1,277 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{pgffor}
+\usetikzlibrary{calc}
+\begin{document}
+%\noindent\resizebox{595.276pt}{841.89pt}{
+%\begin{tikzpicture}
+%\tikzset{every picture/.style={line width=2mm}}
+%\begin{tikzpicture}[line width=1mm]
+\tikzset{%
+   debug_line/.style={line width=3.0mm,color=blue},
+   cutting_line/.style={line width=0.2mm,color=black},
+   folding_line/.style={line width=0.2mm,color=black,dotted},
+   optional_folding_line/.style={line width=0.2mm,color=gray,loosely dotted},
+   print_border/.style={color=red},
+   page_border/.style={color=blue}
+}
+%solid", "dashed", "dotted", "dashdotted", "densely dotted", "loosely dotted", "double
+\begin{tikzpicture}
+
+\def\smalltower#1#2
+{
+  \def\width{2}
+  %\def\height{6}
+  \def\height{#2}
+  \def\foldwidth{1.0}
+  %\def\foldwidth{0.5}
+
+  \coordinate (x) at ($ #1 + (0,0) $); 
+  \coordinate (y) at ($ (x) + (\height+\foldwidth*2,0) $);
+
+  \draw[cutting_line] ($ (x) + (0,0) $) -- ($ (y) + (0,0) $);
+  \draw[cutting_line] ($ (x) + (0,\width * 4+\foldwidth) $) -- ($ (y) + (0,\width * 4+\foldwidth) $);
+
+  \coordinate (x) at ($ #1 + (0,\foldwidth) $); 
+  \foreach \n in {0,...,3}{
+    \draw[folding_line] ($ (x) + (\foldwidth,\n * \width) $) -- ($ (x) + (\height+\foldwidth,\n * \width) $);
+  }
+  \coordinate (x) at ($ #1 + (0,\foldwidth) $); 
+  \foreach \n in {0,...,3}{
+    \draw[cutting_line] ($ (x) + (0.0,\n * \width) $) -- ($ (x) + (\foldwidth,\n * \width) $);
+    \draw[cutting_line] ($ (x) + (\height+\foldwidth,\n * \width) $) -- ($ (x) + (\height+\foldwidth*2,\n * \width) $);
+  }
+
+  \coordinate (x) at ($ #1 + (0,0) $); 
+  \coordinate (y) at ($ (x) + (0,\width * 4 + \foldwidth) $);
+
+  \draw[cutting_line] ($ (x) + (0.0,0.0) $) -- ($ (y) + (0.0,0.0) $);
+
+  \draw[folding_line] ($ (x) + (\foldwidth,\foldwidth) $) -- ($ (y) + (\foldwidth,0.0) $);
+  \draw[folding_line] ($ (x) + (\height+\foldwidth,\foldwidth) $) -- ($ (y) + (\height+\foldwidth,0.0) $);
+
+  \draw[optional_folding_line] 
+    ($ (x) + (\height * 0.5 + \foldwidth, 0.0) $) -- 
+    ($ (y) + (\height * 0.5 + \foldwidth, 0.0) $);
+  \draw[optional_folding_line] 
+    ($ (x) + (\height * 0.5 , 0.0) $) -- 
+    ($ (y) + (\height * 0.5 , 0.0) $);
+  \draw[optional_folding_line] 
+    ($ (x) + (\height * 0.5 + \foldwidth * 2, 0.0) $) -- 
+    ($ (y) + (\height * 0.5 + \foldwidth * 2, 0.0) $);
+
+
+  \draw[cutting_line] ($ (x) + (\foldwidth+0.3,0.0) $) -- ($ (x) + (\foldwidth,\foldwidth) $);
+  \draw[cutting_line] ($ (x) + (\height+\foldwidth-0.3,0.0) $) -- ($ (x) + (\height+\foldwidth,\foldwidth) $);
+
+  \draw[cutting_line] ($ (x) + (\height+\foldwidth * 2,0.0) $) -- ($ (y) + (\height+\foldwidth * 2,0.0) $);
+}
+
+\def\smalltowerrotated#1#2#3#4#5
+{
+  %\def\height{6}
+  \def\height{#2}
+  %\def\width{2}
+  \def\width{#3}
+  %\def\foldwidth{1.0}
+  \def\foldwidth{#4}
+  %\def\foldheight{2}
+  \def\foldheight{#5}
+  %\def\foldwidth{0.5}
+
+  \coordinate (x) at ($ #1 + (0,0) $); 
+  \coordinate (y) at ($ (x) + (0,\height+\foldheight*2) $);
+
+  \draw[cutting_line] ($ (x) + (0,0) $) -- ($ (y) + (0,0) $);
+  \draw[cutting_line] ($ (x) + (\width * 4+\foldwidth,0) $) -- ($ (y) + (\width * 4+\foldwidth,0) $);
+
+  \coordinate (x) at ($ #1 + (\foldwidth,0) $); 
+  \foreach \n in {0,...,3}{
+    \draw[folding_line] ($ (x) + (\n * \width,\foldheight) $) -- ($ (x) + (\n * \width,\height+\foldheight) $);
+  }
+  \coordinate (x) at ($ #1 + (\foldwidth,0) $); 
+  \foreach \n in {0,...,3}{
+    \draw[cutting_line] ($ (x) + (\n * \width,0) $) -- ($ (x) + (\n * \width,\foldheight) $);
+    \draw[cutting_line] ($ (x) + (\n * \width,\height+\foldheight) $) -- ($ (x) + (\n * \width,\height+\foldheight*2) $);
+  }
+ 
+  \coordinate (x) at ($ #1 + (0,0) $); 
+  \coordinate (y) at ($ (x) + (\width * 4 + \foldwidth,0) $);
+ 
+  \draw[cutting_line] ($ (x) + (0,0) $) -- ($ (y) + (0,0) $);
+ 
+  \draw[folding_line] ($ (x) + (\foldwidth,\foldheight) $) -- ($ (y) + (0,\foldheight) $);
+  \draw[folding_line] ($ (x) + (\foldwidth,\height+\foldheight) $) -- ($ (y) + (0,\height+\foldheight) $);
+
+  \draw[optional_folding_line] 
+    ($ (x) + (0,\height * 0.5 + \foldheight) $) -- 
+    ($ (x) + (\foldwidth,\height * 0.5 + \foldheight) $);
+  \draw[optional_folding_line] 
+    ($ (x) + (0,\foldheight + \width ) $) -- 
+    ($ (x) + (\foldwidth,\foldheight + \width) $);
+  \draw[optional_folding_line] 
+    ($ (x) + (0,\foldheight + \height - \width) $) -- 
+    ($ (x) + (\foldwidth,\foldheight + \height - \width) $);
+
+  \draw[optional_folding_line] 
+    ($ (x) + (\width*4,\height * 0.5 + \foldheight) $) -- 
+    ($ (x) + (\width*4+\foldwidth,\height * 0.5 + \foldheight) $);
+  \draw[optional_folding_line] 
+    ($ (x) + (\width*4,\foldheight + \width) $) -- 
+    ($ (x) + (\width*4+\foldwidth,\foldheight + \width) $);
+  \draw[optional_folding_line] 
+    ($ (x) + (\width*4,\foldheight + \height - \width) $) -- 
+    ($ (x) + (\width*4+\foldwidth,\foldheight + \height - \width) $);
+
+
+  \draw[cutting_line] ($ (x) + (0,\foldheight+0.3) $) -- ($ (x) + (\foldwidth,\foldheight) $);
+  \draw[cutting_line] ($ (x) + (0,\height+\foldheight-0.3) $) -- ($ (x) + (\foldwidth,\height+\foldheight) $);
+
+  \draw[cutting_line] ($ (x) + (0,\height+\foldheight * 2) $) -- ($ (y) + (0,\height+\foldheight * 2) $);
+}
+
+\def\smalltowerrotatedflipped#1#2#3#4#5
+{
+  \def\height{#2}
+  \def\width{#3}
+  \def\foldwidth{#4}
+  \def\foldheight{#5}
+
+  \coordinate (x) at ($ #1 + (0,0) $); 
+  \coordinate (y) at ($ (x) + (0,\height+\foldheight*2) $);
+
+  \draw[cutting_line] ($ (x) + (0,0) $) -- ($ (y) + (0,0) $);
+  \draw[cutting_line] ($ (x) + (\width * 4+\foldwidth,0) $) -- ($ (y) + (\width * 4+\foldwidth,0) $);
+
+  \coordinate (x) at ($ #1 + (0,0) $); 
+  \foreach \n in {1,...,4}{
+    \draw[folding_line] ($ (x) + (\n * \width,\foldheight) $) -- ($ (x) + (\n * \width,\height+\foldheight) $);
+  }
+  \coordinate (x) at ($ #1 + (0,0) $); 
+  \foreach \n in {1,...,4}{
+    \draw[cutting_line] ($ (x) + (\n * \width,0) $) -- ($ (x) + (\n * \width,\foldheight) $);
+    \draw[cutting_line] ($ (x) + (\n * \width,\height+\foldheight) $) -- ($ (x) + (\n * \width,\height+\foldheight*2) $);
+  }
+ 
+  \coordinate (x) at ($ #1 + (0,0) $); 
+  \coordinate (y) at ($ (x) + (\width * 4 + \foldwidth,0) $);
+ 
+  \draw[cutting_line] ($ (x) + (0,0) $) -- ($ (y) + (0,0) $);
+ 
+  \draw[folding_line] ($ (x) + (0,\foldheight) $) -- ($ (x) + (\width*4,\foldheight) $);
+  \draw[folding_line] ($ (x) + (0,\height+\foldheight) $) -- ($ (x) + (\width*4,\height+\foldheight) $);
+
+%  \draw[optional_folding_line] 
+%    ($ (x) + (0,\height * 0.5 + \foldheight) $) -- 
+%    ($ (y) + (0,\height * 0.5 + \foldheight) $);
+%  \draw[optional_folding_line] 
+%    ($ (x) + (0,\height * 0.5 ) $) -- 
+%    ($ (y) + (0,\height * 0.5 ) $);
+%  \draw[optional_folding_line] 
+%    ($ (x) + (0,\height * 0.5 + \foldheight * 2) $) -- 
+%    ($ (y) + (0,\height * 0.5 + \foldheight * 2) $);
+
+
+
+
+
+%  \draw[optional_folding_line] 
+%    ($ (x) + (0,\height * 0.5 + \foldheight) $) -- 
+%    ($ (x) + (\foldwidth,\height * 0.5 + \foldheight) $);
+%  \draw[optional_folding_line] 
+%    ($ (x) + (0,\height * 0.5 ) $) -- 
+%    ($ (x) + (\foldwidth,\height * 0.5 ) $);
+%  \draw[optional_folding_line] 
+%    ($ (x) + (0,\height * 0.5 + \foldheight * 2) $) -- 
+%    ($ (x) + (\foldwidth,\height * 0.5 + \foldheight * 2) $);
+%
+%  \draw[optional_folding_line] 
+%    ($ (x) + (\width*4,\height * 0.5 + \foldheight) $) -- 
+%    ($ (x) + (\width*4+\foldwidth,\height * 0.5 + \foldheight) $);
+%  \draw[optional_folding_line] 
+%    ($ (x) + (\width*4,\height * 0.5 ) $) -- 
+%    ($ (x) + (\width*4+\foldwidth,\height * 0.5 ) $);
+%  \draw[optional_folding_line] 
+%    ($ (x) + (\width*4,\height * 0.5 + \foldheight * 2) $) -- 
+%    ($ (x) + (\width*4+\foldwidth,\height * 0.5 + \foldheight * 2) $);
+
+  \draw[optional_folding_line] 
+    ($ (x) + (0,\height * 0.5 + \foldheight) $) -- 
+    ($ (x) + (\foldwidth,\height * 0.5 + \foldheight) $);
+  \draw[optional_folding_line] 
+    ($ (x) + (0,\foldheight + \width ) $) -- 
+    ($ (x) + (\foldwidth,\foldheight + \width) $);
+  \draw[optional_folding_line] 
+    ($ (x) + (0,\foldheight + \height - \width) $) -- 
+    ($ (x) + (\foldwidth,\foldheight + \height - \width) $);
+
+  \draw[optional_folding_line] 
+    ($ (x) + (\width*4,\height * 0.5 + \foldheight) $) -- 
+    ($ (x) + (\width*4+\foldwidth,\height * 0.5 + \foldheight) $);
+  \draw[optional_folding_line] 
+    ($ (x) + (\width*4,\foldheight + \width) $) -- 
+    ($ (x) + (\width*4+\foldwidth,\foldheight + \width) $);
+  \draw[optional_folding_line] 
+    ($ (x) + (\width*4,\foldheight + \height - \width) $) -- 
+    ($ (x) + (\width*4+\foldwidth,\foldheight + \height - \width) $);
+
+
+
+
+  \draw[cutting_line] ($ (x) + (\width*4,\foldheight) $) -- ($ (x) + (\width*4+\foldwidth,\foldheight+0.3) $);
+  \draw[cutting_line] ($ (x) + (\width*4,\height+\foldheight) $) -- ($ (x) + (\width*4+\foldwidth,\height+\foldheight-0.3) $);
+
+  \draw[cutting_line] ($ (x) + (0,\height+\foldheight * 2) $) -- ($ (y) + (0,\height+\foldheight * 2) $);
+}
+
+
+\def\hsize{21}
+\def\vsize{29.7}
+\def\hmiddle{\hsize/2}
+%\def\vmiddle{\vsize/2+0.2}
+\def\vmiddle{\vsize/2}
+ 
+%\draw[page_border] (0,0) -- (\hsize,0);
+%\draw[page_border] (\hsize,0) -- (\hsize,\vsize);
+%\draw[page_border] (0,\vsize) -- (\hsize,\vsize);
+%\draw[page_border] (0,0) -- (0,\vsize);
+
+\draw[page_border] (0,0) rectangle (\hsize,\vsize);
+%\draw[print_border] (0.5,0.5) rectangle (\hsize-0.5,\vsize-0.5);
+%\draw[print_border] (0,0) rectangle (\hsize,\vsize);
+
+
+\def\towerwidth{2.3}
+%\def\towerfoldwidth{1}
+\def\towerfoldwidth{\hsize * 0.5 - \towerwidth * 4}
+
+%\def\towerheight{6}
+\def\towerheight{\towerwidth * 3}
+%\def\towerfoldheight{1.0}
+%\def\towerfoldheight{1.3}
+\def\towerfoldheight{1.5}
+%\def\towerfoldheight{ \vsize / 6 - \towerheight * 3 / 6 }
+
+
+\coordinate (a) at (0,0); 
+
+%\smalltowerrotated{($ (a) + (0,0) $)}{\towerheight}{\towerwidth}{\towerfoldwidth}{\towerfoldheight}
+%\smalltowerrotated{($ (a) + (\hsize * 0.5,0) $)}{\towerheight}{\towerwidth}{\towerfoldwidth}{\towerfoldheight}
+
+\foreach \n in {0,...,2}{
+  \smalltowerrotated{($ (a) + (0,\n * \towerheight + \n * \towerfoldheight * 2 ) $)}{\towerheight}{\towerwidth}{\towerfoldwidth}{\towerfoldheight}
+  \smalltowerrotatedflipped{($ (a) + (\hsize * 0.5,\n * \towerheight + \n * \towerfoldheight * 2 ) $)}{\towerheight}{\towerwidth}{\towerfoldwidth}{\towerfoldheight}
+}
+
+% \smalltower{($ (a) + (0,0) $)}{\towerwidth}
+% \smalltower{($ (a) + (0,9) $)}{\towerwidth}
+% \smalltower{($ (a) + (0,18) $)}{\towerwidth}
+% \smalltower{($ (a) + (\towerwidth+2,0) $)}{\towerwidth}
+% \smalltower{($ (a) + (\towerwidth+2,9) $)}{\towerwidth}
+% \smalltower{($ (a) + (\towerwidth+2,18) $)}{\towerwidth}
+
+%\smalltower{(9,1)}{6}
+ 
+\end{tikzpicture}
+\end{document}
+

@@ -1,0 +1,178 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{pgffor}
+\usetikzlibrary{calc}
+\begin{document}
+%\noindent\resizebox{595.276pt}{841.89pt}{
+%\begin{tikzpicture}
+%\tikzset{every picture/.style={line width=2mm}}
+%\begin{tikzpicture}[line width=1mm]
+\tikzset{%
+   debugLine/.style={line width=3.0mm,color=blue},
+   cuttingLine/.style={line width=0.2mm,color=black},
+   foldingLine/.style={line width=0.2mm,color=black,dotted},
+   optionalLoldingLine/.style={line width=0.2mm,color=gray,loosely dotted},
+   printBorder/.style={color=red},
+   pageBorder/.style={color=blue}
+}
+%solid", "dashed", "dotted", "dashdotted", "densely dotted", "loosely dotted", "double
+\begin{tikzpicture}
+
+\def\hsize{21}
+\def\vsize{29.7}
+\def\hmiddle{\hsize/2}
+%\def\vmiddle{\vsize/2+0.2}
+\def\vmiddle{\vsize/2}
+ 
+\draw[pageBorder] (0,0) rectangle (\hsize,\vsize);
+%\draw[pageBorder] (0,\vmiddle) -- (\hsize,\vmiddle);
+
+\coordinate (eyebrowsLeft) at (\hsize-12.5,\vmiddle-2.5); 
+\coordinate (eyebrowsMiddle) at (\hsize-12.5,\vmiddle); 
+\coordinate (eyebrowsRight) at (\hsize-12.5,\vmiddle+2.5); 
+\draw[foldingLine] (eyebrowsLeft) -- (eyebrowsMiddle) -- (eyebrowsRight);
+
+\coordinate (eyeLeftTopOut) at (\hsize-12,\vmiddle-4.5); 
+\coordinate (eyeLeftTopIn) at (\hsize-12,\vmiddle-2.5); 
+\coordinate (eyeLeftMiddleOutTop) at (\hsize-11,\vmiddle-5.5); 
+\coordinate (eyeLeftMiddleOutBottom) at (\hsize-10.5,\vmiddle-5.5); 
+\coordinate (eyeLeftMiddleInTop) at (\hsize-11,\vmiddle-1.5); 
+\coordinate (eyeLeftMiddleInBottom) at (\hsize-10.5,\vmiddle-1.5); 
+\coordinate (eyeLeftBottomOut) at (\hsize-9.5,\vmiddle-4.5); 
+\coordinate (eyeLeftBottomIn) at (\hsize-9.5,\vmiddle-2.5); 
+
+\draw[cuttingLine] (eyeLeftMiddleOutTop) -- (eyeLeftTopOut) -- (eyeLeftTopIn) -- (eyeLeftMiddleInTop);
+\draw[cuttingLine] (eyeLeftMiddleOutBottom) -- (eyeLeftBottomOut) -- (eyeLeftBottomIn) -- (eyeLeftMiddleInBottom);
+\draw[cuttingLine] (eyeLeftMiddleOutTop) -- (eyeLeftMiddleOutBottom);
+\draw[cuttingLine] (eyeLeftMiddleInTop) -- (eyeLeftMiddleInBottom);
+
+\coordinate (eyeRightTopOut) at (\hsize-12,\vmiddle+4.5); 
+\coordinate (eyeRightTopIn) at (\hsize-12,\vmiddle+2.5); 
+\coordinate (eyeRightMiddleOutTop) at (\hsize-11,\vmiddle+5.5); 
+\coordinate (eyeRightMiddleOutBottom) at (\hsize-10.5,\vmiddle+5.5); 
+\coordinate (eyeRightMiddleInTop) at (\hsize-11,\vmiddle+1.5); 
+\coordinate (eyeRightMiddleInBottom) at (\hsize-10.5,\vmiddle+1.5); 
+\coordinate (eyeRightBottomOut) at (\hsize-9.5,\vmiddle+4.5); 
+\coordinate (eyeRightBottomIn) at (\hsize-9.5,\vmiddle+2.5); 
+
+\draw[cuttingLine] (eyeRightMiddleOutTop) -- (eyeRightTopOut) -- (eyeRightTopIn) -- (eyeRightMiddleInTop);
+\draw[cuttingLine] (eyeRightMiddleOutBottom) -- (eyeRightBottomOut) -- (eyeRightBottomIn) -- (eyeRightMiddleInBottom);
+\draw[cuttingLine] (eyeRightMiddleOutTop) -- (eyeRightMiddleOutBottom);
+\draw[cuttingLine] (eyeRightMiddleInTop) -- (eyeRightMiddleInBottom);
+
+\def\noseWidth{2}
+\coordinate (noseLowLeft) at (\hsize-8,\vmiddle-\noseWidth); 
+\coordinate (noseLowRight) at (\hsize-8,\vmiddle+\noseWidth); 
+\coordinate (noseLowMiddle) at (\hsize-7,\vmiddle); 
+\coordinate (noseTopMiddle) at (\hsize-12,\vmiddle); 
+
+\draw[foldingLine] (noseTopMiddle) -- (noseLowMiddle);
+\draw[foldingLine] (noseTopMiddle) -- (noseLowLeft);
+\draw[foldingLine] (noseTopMiddle) -- (noseLowRight);
+\draw[cuttingLine] (noseLowLeft) -- (noseLowMiddle);
+\draw[cuttingLine] (noseLowRight) -- (noseLowMiddle);
+
+\draw[foldingLine] (eyeLeftTopIn) -- (noseTopMiddle) -- (eyeRightTopIn);
+
+\def\mouthTopWidth{3.5}
+\def\mouthLowWidth{1.5}
+\coordinate (mouthTopMiddle) at (\hsize-5.3,\vmiddle); 
+\coordinate (mouthTopLeft) at (\hsize-6,\vmiddle-\mouthTopWidth); 
+\coordinate (mouthTopRight) at (\hsize-6,\vmiddle+\mouthTopWidth); 
+
+\coordinate (mouthMiddleRight) at (\hsize-5.25,\vmiddle+\mouthTopWidth); 
+\coordinate (mouthMiddleMiddle) at (\hsize-4.1,\vmiddle); 
+
+\coordinate (mouthLowLeft) at (\hsize-4.5,\vmiddle-\mouthTopWidth); 
+\coordinate (mouthLowRight) at (\hsize-4.5,\vmiddle+\mouthTopWidth); 
+\coordinate (mouthLowMiddle) at (\hsize-3,\vmiddle); 
+\coordinate (mouthLowMiddleLeft) at (\hsize-3,\vmiddle-\mouthLowWidth); 
+\coordinate (mouthLowMiddleRight) at (\hsize-3,\vmiddle+\mouthLowWidth); 
+
+\draw[cuttingLine] (mouthTopLeft) -- (mouthTopMiddle);
+\draw[foldingLine] (mouthTopMiddle) -- (mouthTopRight);
+\draw[foldingLine] (mouthLowLeft) -- (mouthLowMiddleLeft);
+\draw[cuttingLine] (mouthLowMiddleLeft) -- (mouthLowMiddle);
+\draw[cuttingLine] (mouthLowMiddle) -- (mouthLowMiddleRight);
+\draw[foldingLine] (mouthLowMiddleRight) -- (mouthLowRight);
+\draw[cuttingLine] (mouthTopLeft) -- (mouthLowLeft);
+\draw[cuttingLine] (mouthTopRight) -- (mouthLowRight);
+\draw[cuttingLine] (mouthTopMiddle) -- (mouthLowMiddle);
+\draw[cuttingLine] (mouthMiddleMiddle) -- (mouthMiddleRight);
+
+\coordinate (chinLowMiddle) at (\hsize,\vmiddle); 
+\coordinate (chinRightTop) at (\hsize-1.5,\vmiddle+\mouthLowWidth); 
+\coordinate (chinRightBottom) at (\hsize,\vmiddle+\mouthLowWidth); 
+\coordinate (chinLeftTop) at (\hsize-3,\vmiddle-\mouthLowWidth); 
+\coordinate (chinLeftBottom) at (\hsize-1.8,\vmiddle-2.4); 
+\draw[cuttingLine] (mouthLowMiddle) -- (chinLowMiddle);
+\draw[cuttingLine] (chinRightTop) -- (chinRightBottom);
+\draw[cuttingLine] (chinLeftTop) -- (chinLeftBottom);
+
+\draw[cuttingLine] (noseLowMiddle) -- (mouthTopMiddle);
+
+\coordinate (cheekLeftEearTop) at (\hsize-7,0); 
+\coordinate (cheekLeftEearMiddle) at (\hsize-6,0); 
+\coordinate (cheekLeftEearLow) at (\hsize-5,0); 
+\coordinate (cheekLeftTop) at (\hsize-7,8); 
+\coordinate (cheekLeftBottom) at (\hsize,9); 
+
+\draw[foldingLine] (cheekLeftEearTop) -- (cheekLeftTop);
+\draw[foldingLine] (cheekLeftEearMiddle) -- (cheekLeftTop);
+\draw[foldingLine] (cheekLeftEearLow) -- (cheekLeftBottom);
+\draw[foldingLine] (cheekLeftTop) -- (cheekLeftBottom);
+
+\coordinate (cheekRightEearTop) at (\hsize-7,\vsize); 
+\coordinate (cheekRightEearMiddle) at (\hsize-6,\vsize); 
+\coordinate (cheekRightEearLow) at (\hsize-5,\vsize); 
+\coordinate (cheekRightTop) at (\hsize-7,\vsize-8); 
+\coordinate (cheekRightBottom) at (\hsize,\vsize-9); 
+
+\draw[foldingLine] (cheekRightEearTop) -- (cheekRightTop);
+\draw[foldingLine] (cheekRightEearMiddle) -- (cheekRightTop);
+\draw[foldingLine] (cheekRightEearLow) -- (cheekRightBottom);
+\draw[foldingLine] (cheekRightTop) -- (cheekRightBottom);
+
+\coordinate (foreheadTop) at (0,\vmiddle); 
+\coordinate (foreheadBottom) at (4.5,\vmiddle); 
+\coordinate (foreheadLeft) at (0,\vmiddle-3); 
+
+\draw[cuttingLine] (foreheadTop) -- (foreheadBottom);
+\draw[foldingLine] (foreheadLeft) -- (foreheadBottom);
+
+\coordinate (templeLeftTopOut) at (0,0); 
+\coordinate (templeLeftTopIn) at (0,3); 
+\coordinate (templeLeftBottomIn) at (6.5,8); 
+\coordinate (templeLeftMiddle) at (1.8,2.2); 
+\coordinate (templeLeftBottomOut) at (7.5,0); 
+
+\draw[foldingLine] (templeLeftTopOut) -- (templeLeftBottomIn);
+\draw[foldingLine] (templeLeftTopIn) -- (templeLeftBottomIn);
+\draw[foldingLine] (templeLeftBottomOut) -- (templeLeftMiddle);
+
+\coordinate (templeRightTopOut) at (0,\vsize); 
+\coordinate (templeRightTopIn) at (0,\vsize-3); 
+\coordinate (templeRightBottomIn) at (6.5,\vsize-8); 
+\coordinate (templeRightMiddle) at (1.8,\vsize-2.2); 
+\coordinate (templeRightBottomOut) at (7.5,\vsize); 
+
+\draw[foldingLine] (templeRightTopOut) -- (templeRightBottomIn);
+\draw[foldingLine] (templeRightTopIn) -- (templeRightBottomIn);
+\draw[foldingLine] (templeRightBottomOut) -- (templeRightMiddle);
+
+\coordinate (earLeftTop) at (3.2,1.7); 
+\coordinate (earLeftBottom) at (17,1.7); 
+\draw[foldingLine] (earLeftTop) -- (earLeftBottom);
+
+\coordinate (earRightTop) at (3.2,\vsize-1.7); 
+\coordinate (earRightBottom) at (17,\vsize-1.7); 
+\draw[foldingLine] (earRightTop) -- (earRightBottom);
+
+\coordinate (ropeLeft) at (7.5,3.5); 
+\coordinate (ropeRight) at (7.5,\vsize-3.5); 
+
+\draw[cuttingLine] (ropeLeft) rectangle ($ (ropeLeft) + (0.2,0.2) $);
+\draw[cuttingLine] (ropeRight) rectangle ($ (ropeRight) - (0.2,0.2) $);
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,13 @@
+height 6.9cm
+width 2.3cm
+fold widht 1.5cm
+
+boden
+1.5 + 2.3 + 6.9 + 2.3 + 1.5
+14.5
+
+streifen
+2.3 + 6.9 + 2.3
+11.5
+
+
