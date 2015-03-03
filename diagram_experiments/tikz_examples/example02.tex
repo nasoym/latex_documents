@@ -1,0 +1,27 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows}
+
+\begin{document}
+\begin{figure}
+\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=5 cm, scale = 1, transform shape]
+
+
+\node[initial,state] (A)                                    {$s_0$};
+\node[state]         (B) [right of=A]                       {$s_2$};
+\node[state,accepting]         (C) [above of=B]                       {$s_1$};
+\node[state,accepting]         (D) [below of=B]                       {$s_3$};
+
+\path[->] (A) edge [left]       node [align=center]  {$ c = c + 1 $} (C)
+      (A) edge [above]      node [align=center]  {$ c = c + 5 $} (B)
+      (A) edge [left]       node [align=center]  {$ c = c - 1 $} (D)
+      (B) edge [right]      node [align=center]  {$ c = c - 1 $} (D)
+      (C) edge [loop above] node [align=center]  {$ c = c + 1 $} (C)
+      (D) edge [loop below] node [align=center]  {$ c = c - 2 $} (D);
+
+\end{tikzpicture}
+\caption{An example of SST}
+\end{figure}
+
+\end{document}
