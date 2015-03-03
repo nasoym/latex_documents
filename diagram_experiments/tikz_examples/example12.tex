@@ -1,0 +1,10 @@
+\documentclass{standalone} 
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata} 
+\begin{document}
+    \begin{tikzpicture}[thick]
+        \node[state] (1) {$1$};
+        \draw [->] (1) edge   [loop above]  ()
+                       edge   [bend left]   ++ (-2,0);
+    \end{tikzpicture}
+\end{document}
