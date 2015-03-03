@@ -1,0 +1,65 @@
+\documentclass{scrartcl}
+%\documentclass{article}
+%\documentclass{standalone}
+%\documentclass[parskip]{scrartcl}
+%\usepackage[margin=15mm]{geometry}
+\usepackage{tikz}
+%\usetikzlibrary{backgrounds,fit,automata,arrows,trees,positioning,shapes,calc}
+\usetikzlibrary{fit,positioning}
+   \pgfdeclarelayer{foreground}
+   \pgfdeclarelayer{background}
+% tell TikZ how to stack them (back to front)
+   \pgfsetlayers{background,main,foreground}
+\begin{document}
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{box} = [draw, thick, fill=blue!20]
+\begin{tikzpicture}
+% [   
+%   round/.style={rounded corners=1.5mm,minimum width=1cm,inner sep=2mm,above right,draw,align=left,text width=7mm},
+%   box/.style={draw, thick, fill=blue!20}
+% ]
+
+\begin{pgfonlayer}{foreground}
+  \node[box] (A) {Abcdefghij};
+  \node[box] (B) [below = of A]{BbbBbbBbbBbbBbb};
+  \node[box] (C) [below = of B]{hello};
+  %\node[box] (D) [right = of C, node distance=1cm]{hello};
+  \node[box] (D) [right =1cm of C]{foo};
+  \node[box] (E) [left =1cm of C]{foo};
+\end{pgfonlayer}
+
+  \node[box] (AA) [below = of C]{
+    \tikz{
+      \node[box] (AAb) {kdkdkdkdkdkd};
+      \node[box] (AAc) [below = of AAb]{kdkdkdkdkdkd};
+     \node[box] (AAd) [below = of AAc]{kdkdkdkdkdkd};
+     \node[box] (AAe) [below = of AAd]{
+        \tikz{
+         \node[box] (AAAb) {kdkdkdkdkdkd};
+         \node[box] (AAAc) [left = of AAAb]{kdkdkdkdkdkd};
+         \draw[-latex] (AAAb) to[out=180, in=90] (AAAc);
+       }
+     };
+    }
+  };
+
+  %\path [line] (A.north) |- (B.south);
+  %\path[->] (A) edge [bend right] node {bcdd} (B);
+  %\path (A) edge [bend left] node {bcdd} (B);
+  \path[->] (A) edge node {bcdd} (B);
+
+  \path[->] (B) edge node {bcdd} (AA);
+  %\path[->] (AAb) edge node {bcdd} (AAAc);
+  \draw[-latex] (A) to[out=180, in=90] (D);
+  %\draw[-latex] (AAb) to[out=180, in=90] (AAAc);
+
+  \path[->] (A) edge [bend right] node {bcdd} (AAAc);
+
+  \node[box,fit=(A)(B)(C)] (ABC) {};
+\begin{pgfonlayer}{background}
+  %\node[box,fit=(A)(B)(C)] (ABC) {};
+  \node[box,fit=(ABC)(AA)] (A2) {};
+\end{pgfonlayer}
+
+\end{tikzpicture}
+\end{document}
