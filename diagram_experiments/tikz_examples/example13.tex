@@ -1,0 +1,45 @@
+\documentclass[tikz,border=3mm]{standalone}
+\usetikzlibrary{fit,positioning,matrix,backgrounds}
+
+\begin{document}
+\tikzset{element/.style={draw=black, fill=yellow, rounded corners, minimum height=1cm},
+         dot/.style={circle, minimum size=4pt, inner sep=0pt, outer sep=0pt, fill=gray},
+         pics/group/.style 2 args={
+            code = {
+              \node(-main)[matrix of nodes, nodes={element}, draw, 
+                   fill=blue!75!green!25, column sep=5mm, ampersand replacement=\&]
+            {#2\\};
+              \node[above=-\pgflinewidth of -main.north,draw, fill=white] (-title) 
+                  {{\scriptsize Group:} #1};
+              % just helper points of matrix node coords
+              \foreach \i in {north west, north, north east}
+                 \node[dot, above=1cm of -main.\i] (p-\i) {};
+            },
+            background code={
+                \node[fit=(p-north west)(-main.south east), draw, dashed, 
+                    color=gray, fill=red!10] (-ccont) {};
+                }
+            }
+}
+
+\begin{tikzpicture}
+\pic(gmain) {group={Main}{c-left \& b-middle \& a-right}};
+
+\pic(gleft)[left=of gmain-ccont] {group={Left}%
+      {\begin{tabular}{l}
+         \#\#\#\#\#\#\\
+         \#  just random element\\
+         \#  with unknowm alignement \\ 
+         \# min/max of x/y \end{tabular}
+      }};
+
+\pic (group_d) [right = of gmain-ccont] {group={Group D - very long name}{ccc-left \& bb}};
+
+\pic (group_below) [below= 2cm of gmain-ccont] {group={Below}{ccc-left \& bb}};
+
+\pic(groupd) [above=of gmain-ccont] {group={Group D}{bb \& ccc-left}};
+
+%\draw[<->] (group_below-main-1-1.east) -- (group_d-ccont.south west);
+
+\end{tikzpicture}
+\end{document}
